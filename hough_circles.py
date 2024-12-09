@@ -1,5 +1,6 @@
 import cv2
 import argparse
+from preprocess import preprocess_image
 
 def main():
     parser = argparse.ArgumentParser(description='Hough Transform')
@@ -9,8 +10,10 @@ def main():
     img, detected_circles = get_circles(args.image)
 
     cv2.imwrite("circle_results.png", img)
+    preprocess_image(detected_circles[-1], save=True)
 
 def get_circles(img_path):
+    
     img = cv2.imread(img_path)
     img = cv2.resize(img, dsize=(0, 0), fx=0.5, fy=0.5)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -36,7 +39,7 @@ def get_circles(img_path):
         circle_imgs.append(bounding_img)
         # bounding_img = cv2.resize(bounding_img, dsize=(28, 28))
         # cv2.imwrite("sign_results.png", bounding_img)
-        cv2.circle(img, (x, y), r, (0, 0, 255), 1)
+        cv2.circle(img, (x, y), r, (0, 0, 255), 3)
 
     return img, circle_imgs
 
